@@ -1,0 +1,827 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-11">
+      <div class="card result-card border-0">
+        <div class="row align-items-center g-5">
+          <div class="col-lg-5">
+            <div class="image-wrapper">
+              <img
+                src="/{{ image_path }}"
+                class="result-image img-fluid"
+                alt="Prediction Image"
+              />
+
+              <div class="scanner-line"></div>
+
+              <div class="scanner-badge">
+                <i class="fas fa-microchip me-2"></i>
+                AI DETECTING...
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-7">
+            <div class="prediction-box mb-4">
+              <p class="prediction-label mb-1">Predicted Fungi</p>
+              <h1 class="prediction-name mb-0">{{ prediction }}</h1>
+            </div>
+
+            <div class="mb-4">
+              <div class="d-flex justify-content-between mb-2">
+                <span class="fw-bold fs-4">Confidence Score</span>
+                {% if prediction == "Unknown" %}
+                <span class="fw-bold text-danger fs-4">0%</span>
+                {% else %}
+                <span class="fw-bold text-primary fs-4">{{ confidence }}%</span>
+                {% endif %}
+              </div>
+
+              <div class="progress confidence-bar">
+                {% if prediction == "Unknown" %}
+                <div class="progress-bar bg-danger" style="width: 0%"></div>
+                {% else %}
+                <div
+                  class="progress-bar confidence-progress"
+                  style="width: {{ confidence }}%"
+                ></div>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="confidence-status mt-3 mb-4">
+              {% if prediction == "Unknown" %}
+              <span class="badge bg-danger shadow-sm"
+                >Low Confidence Prediction</span
+              >
+              {% elif confidence|float >= 90 %}
+              <span class="badge bg-success shadow-sm"
+                >High Confidence Prediction</span
+              >
+              {% elif confidence|float >= 70 %}
+              <span class="badge bg-warning text-dark shadow-sm"
+                >Moderate Confidence Prediction</span
+              >
+              {% else %}
+              <span class="badge bg-danger shadow-sm"
+                >Low Confidence Prediction</span
+              >
+              {% endif %}
+            </div>
+
+            <hr class="result-divider" />
+
+            <div class="insight-box mb-4">
+              <div class="insight-title">
+                <i class="fas fa-microscope"></i>
+                Quick AI Insight
+              </div>
+              {% if prediction == 'Candida albicans' %}
+              <p>
+                Candida albicans may cause fungal infections when overgrown
+                inside the human body.
+              </p>
+              {% elif prediction == 'Epidermophyton floccosum' %}
+              <p>
+                Epidermophyton floccosum commonly infects skin and nails in
+                humid environments.
+              </p>
+              {% elif prediction == 'Trichophyton mentagrophytes' %}
+              <p>
+                Trichophyton mentagrophytes is associated with athlete’s foot
+                and ringworm infection.
+              </p>
+              {% elif prediction == 'Trichophyton rubrum' %}
+              <p>
+                Trichophyton rubrum is one of the most common dermatophyte fungi
+                worldwide.
+              </p>
+              {% else %}
+              <p class="text-danger">
+                Unknown fungi detected. No information available.
+              </p>
+              {% endif %}
+            </div>
+
+            <div class="action-box mb-4">
+              <div class="action-title">
+                <i class="fas fa-lightbulb me-2"></i>
+                AI Analysis & Recommendation
+              </div>
+
+              {% if prediction == 'Candida albicans' %}
+              <ul class="action-list">
+                <li>Maintain proper personal hygiene practices.</li>
+                <li>Avoid prolonged exposure to moist environments.</li>
+                <li>
+                  Monitor symptoms and seek professional consultation if the
+                  condition persists.
+                </li>
+              </ul>
+              {% elif prediction == 'Epidermophyton floccosum' %}
+              <ul class="action-list">
+                <li>Keep affected skin regions dry and clean.</li>
+                <li>Avoid sharing towels, footwear and personal items.</li>
+                <li>
+                  Practice proper hygiene to reduce fungal transmission risk.
+                </li>
+              </ul>
+              {% elif prediction == 'Trichophyton mentagrophytes' %}
+              <ul class="action-list">
+                <li>Regularly disinfect footwear and socks.</li>
+                <li>Avoid walking barefoot in public wet areas.</li>
+                <li>Monitor skin irritation and infection symptoms.</li>
+              </ul>
+              {% elif prediction == 'Trichophyton rubrum' %}
+              <ul class="action-list">
+                <li>Maintain good foot hygiene.</li>
+                <li>Change socks regularly and keep feet dry.</li>
+                <li>Seek medical advice if symptoms worsen over time.</li>
+              </ul>
+              {% else %}
+              <ul class="action-list">
+                <li>
+                  The prediction confidence is insufficient for reliable
+                  classification.
+                </li>
+                <li>Upload a clearer microscopic image.</li>
+                <li>
+                  Perform additional microscopic examination for verification.
+                </li>
+              </ul>
+              {% endif %}
+            </div>
+
+            <div class="d-flex flex-wrap gap-3 justify-content-start mt-4">
+              <button
+                class="btn custom-btn details-btn"
+                data-bs-toggle="modal"
+                data-bs-target="#detailsModal"
+              >
+                <i class="fas fa-book-open me-2"></i> More Details
+              </button>
+
+              <button
+                class="btn custom-btn download-btn"
+                onclick="downloadPDF()"
+              >
+                <i class="fas fa-download me-2"></i> Download Report
+              </button>
+
+              <a href="/prediction" class="btn custom-btn analyse-btn">
+                <i class="fas fa-rotate-left me-2"></i> Analyse Another
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="detailsModal" tabindex="-1">
+  <div
+    class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable custom-modal-size"
+  >
+    <div class="modal-content custom-modal border-0">
+      <div
+        class="modal-header custom-modal-header border-0 d-flex justify-content-between align-items-center"
+      >
+        <h5 class="fw-bold text-white mb-0">
+          <i class="fas fa-circle-info me-2"></i> Fungi Information
+        </h5>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          data-bs-dismiss="modal"
+        ></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="row align-items-start g-4">
+          <div class="col-lg-4 text-center d-flex justify-content-center">
+            <div>
+              <img
+                src="/{{ image_path }}"
+                class="modal-image img-fluid"
+                alt="Microscopic view"
+              />
+            </div>
+          </div>
+
+          <div class="col-lg-8">
+            <span class="fungi-badge">AI Identified Species</span>
+            <h1 class="fungi-title">{{ prediction }}</h1>
+
+            {% if prediction == 'Trichophyton rubrum' %}
+            <p class="fungi-desc">
+              Trichophyton rubrum is one of the most common dermatophyte fungi
+              worldwide and frequently causes athlete’s foot and fungal nail
+              infections.
+            </p>
+            <div class="info-grid">
+              <div class="info-card">
+                <h6>Category</h6>
+                <p>Dermatophyte</p>
+              </div>
+              <div class="info-card">
+                <h6>Common Infection</h6>
+                <p>Athlete’s Foot</p>
+              </div>
+              <div class="info-card">
+                <h6>Habitat</h6>
+                <p>Human Skin</p>
+              </div>
+              <div class="info-card">
+                <h6>Risk</h6>
+                <p class="text-warning fw-bold">Medium</p>
+              </div>
+            </div>
+            <a
+              href="https://dermnetnz.org/topics/tinea-corporis"
+              target="_blank"
+              class="learn-btn"
+            >
+              Learn More from DermNet
+              <i class="fas fa-arrow-up-right-from-square ms-1"></i>
+            </a>
+
+            {% elif prediction == 'Trichophyton mentagrophytes' %}
+            <p class="fungi-desc">
+              Trichophyton mentagrophytes commonly causes athlete’s foot,
+              ringworm and fungal skin infections.
+            </p>
+            <div class="info-grid">
+              <div class="info-card">
+                <h6>Category</h6>
+                <p>Dermatophyte</p>
+              </div>
+              <div class="info-card">
+                <h6>Common Infection</h6>
+                <p>Ringworm</p>
+              </div>
+              <div class="info-card">
+                <h6>Habitat</h6>
+                <p>Human Skin</p>
+              </div>
+              <div class="info-card">
+                <h6>Risk</h6>
+                <p class="text-warning fw-bold">Medium</p>
+              </div>
+            </div>
+            <a
+              href="https://my.clevelandclinic.org/health/diseases/4560-ringworm"
+              target="_blank"
+              class="learn-btn"
+            >
+              Learn More from Cleveland Clinic
+              <i class="fas fa-arrow-up-right-from-square ms-1"></i>
+            </a>
+
+            {% elif prediction == 'Candida albicans' %}
+            <p class="fungi-desc">
+              Candida albicans is a yeast species commonly found in the human
+              body and may cause infections when immunity becomes weak.
+            </p>
+            <div class="info-grid">
+              <div class="info-card">
+                <h6>Category</h6>
+                <p>Yeast Fungus</p>
+              </div>
+              <div class="info-card">
+                <h6>Common Infection</h6>
+                <p>Candidiasis</p>
+              </div>
+              <div class="info-card">
+                <h6>Habitat</h6>
+                <p>Human Body</p>
+              </div>
+              <div class="info-card">
+                <h6>Risk</h6>
+                <p class="text-warning fw-bold">Medium</p>
+              </div>
+            </div>
+            <a
+              href="https://www.cdc.gov/candidiasis/about/index.html"
+              target="_blank"
+              class="learn-btn"
+            >
+              Learn More from CDC
+              <i class="fas fa-arrow-up-right-from-square ms-1"></i>
+            </a>
+
+            {% elif prediction == 'Epidermophyton floccosum' %}
+            <p class="fungi-desc">
+              Epidermophyton floccosum commonly causes athlete’s foot, jock itch
+              and fungal skin infections in humid environments.
+            </p>
+            <div class="info-grid">
+              <div class="info-card">
+                <h6>Category</h6>
+                <p>Dermatophyte</p>
+              </div>
+              <div class="info-card">
+                <h6>Common Infection</h6>
+                <p>Jock Itch</p>
+              </div>
+              <div class="info-card">
+                <h6>Habitat</h6>
+                <p>Human Skin</p>
+              </div>
+              <div class="info-card">
+                <h6>Risk</h6>
+                <p class="text-warning fw-bold">Medium</p>
+              </div>
+            </div>
+            <a
+              href="https://www.sciencedirect.com/topics/immunology-and-microbiology/epidermophyton-floccosum"
+              target="_blank"
+              class="learn-btn"
+            >
+              Learn More from ScienceDirect
+              <i class="fas fa-arrow-up-right-from-square ms-1"></i>
+            </a>
+
+            {% else %}
+            <div class="unknown-box p-3 bg-light text-danger rounded-3">
+              <i class="fas fa-circle-exclamation me-2"></i> Unknown fungi
+              detected. No detailed information available.
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  body {
+    background: linear-gradient(135deg, #eef5fb, #f8fcff);
+    font-family: "Inter", sans-serif;
+  }
+
+  .result-card {
+    padding: 40px;
+    border-radius: 24px;
+    background: white;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+  }
+
+  .image-wrapper {
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  }
+
+  .result-image {
+    width: 100%;
+    border-radius: 20px;
+    display: block;
+    transition: transform 0.3s ease;
+  }
+
+  .image-wrapper::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.2), transparent);
+  }
+
+  /* Scanner Effect */
+  .scanner-line {
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    background: #00e5ff;
+    box-shadow: 0 0 15px #00e5ff;
+    animation: scan 2.5s linear infinite;
+    z-index: 2;
+  }
+
+  @keyframes scan {
+    0% {
+      top: 0;
+    }
+    50% {
+      top: 100%;
+    }
+    100% {
+      top: 0;
+    }
+  }
+
+  .scanner-badge {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(17, 24, 39, 0.8);
+    backdrop-filter: blur(4px);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-size: 11px;
+    font-weight: 700;
+    z-index: 3;
+    letter-spacing: 1px;
+  }
+
+  /* Info Blocks */
+  .prediction-box {
+    background: linear-gradient(135deg, #eef8ff, #f4faff);
+    padding: 20px 25px;
+    border-radius: 18px;
+    border-left: 5px solid #0077ff;
+  }
+
+  .prediction-label {
+    font-size: 14px;
+    color: #6b7280;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .prediction-name {
+    font-size: 32px;
+    font-weight: 800;
+    background: linear-gradient(to right, #0077ff, #00c6ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .fw-bold.fs-4 {
+    font-size: 16px !important;
+    color: #374151;
+  }
+  .text-primary.fs-4,
+  .text-danger.fs-4 {
+    font-size: 18px !important;
+  }
+
+  .confidence-bar {
+    height: 12px;
+    border-radius: 30px;
+    background: #e5e7eb;
+  }
+
+  .confidence-progress {
+    background: linear-gradient(to right, #00c6ff, #0077ff);
+    border-radius: 30px;
+  }
+
+  .confidence-status .badge {
+    padding: 8px 16px;
+    font-size: 12px;
+    border-radius: 30px;
+    font-weight: 600;
+  }
+
+  .result-divider {
+    margin: 30px 0;
+    border-top: 2px dashed #e5e7eb;
+  }
+
+  .insight-box,
+  .action-box {
+    background: #f8fafc;
+    border-left: 4px solid #00c6ff;
+    padding: 20px;
+    border-radius: 14px;
+  }
+
+  .action-box {
+    border-left-color: #0077ff;
+  }
+
+  .insight-title,
+  .action-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #0077ff;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  .insight-box p,
+  .action-list li {
+    font-size: 14px;
+    color: #4b5563;
+    line-height: 1.6;
+  }
+
+  .action-list {
+    padding-left: 18px;
+    margin: 0;
+  }
+  .action-list li {
+    margin-bottom: 6px;
+  }
+
+  /* Custom Functional Buttons */
+  .custom-btn {
+    border: none;
+    padding: 12px 22px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+  }
+
+  .custom-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .details-btn {
+    background: linear-gradient(135deg, #0077ff, #00b0ff);
+    color: white;
+  }
+  .download-btn {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+  }
+  .analyse-btn {
+    background: #ffffff;
+    border: 1.5px solid #d1d5db;
+    color: #374151;
+  }
+  .analyse-btn:hover {
+    background: #f9fafb;
+    color: #111827;
+  }
+
+  /* Modal Details Styling */
+  .custom-modal-size {
+    max-width: 780px;
+  }
+  .custom-modal {
+    border-radius: 20px;
+  }
+  .custom-modal-header {
+    background: linear-gradient(135deg, #0077ff, #00c6ff);
+    padding: 16px 24px;
+  }
+
+  .modal-image {
+    max-width: 100%;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  .fungi-badge {
+    display: inline-block;
+    background: #eff6ff;
+    color: #2563eb;
+    padding: 6px 14px;
+    border-radius: 30px;
+    font-size: 11px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  .fungi-title {
+    font-size: 36px;
+    font-weight: 800;
+    background: linear-gradient(to right, #0077ff, #00c6ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .fungi-desc {
+    font-size: 14px;
+    color: #4b5563;
+    line-height: 1.6;
+  }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin: 20px 0;
+  }
+
+  .info-card {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 14px;
+    border: 1px solid #f1f5f9;
+  }
+  .info-card h6 {
+    color: #2563eb;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .info-card p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1f2937;
+  }
+
+  .learn-btn {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    color: white;
+    background: #1f2937;
+    transition: background 0.2s;
+  }
+  .learn-btn:hover {
+    background: #111827;
+    color: white;
+  }
+
+  /* Responsive Fixes */
+  @media (max-width: 992px) {
+    .result-card {
+      padding: 25px;
+    }
+    .fungi-title {
+      font-size: 28px;
+      -webkit-text-fill-color: initial;
+      background: none;
+      color: #0077ff;
+    }
+    .info-grid {
+      grid-template-columns: 1fr;
+    }
+    .custom-btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script>
+  async function downloadPDF() {
+      if (!window.jspdf) {
+          alert("jsPDF system failed to load. Please check your internet connection.");
+          return;
+      }
+
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+
+      const blue = [0, 119, 255];
+      const dark = [40, 40, 40];
+      const gray = [120, 120, 120];
+      const light = [245, 248, 255];
+
+      // Document Header Band
+      doc.setFillColor(...blue);
+      doc.rect(0, 0, 220, 32, "F");
+
+      doc.setTextColor(255, 255, 255);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(22);
+      doc.text("FungiVision AI Report", 20, 21);
+
+      // Subtitle
+      doc.setTextColor(...gray);
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(10);
+      doc.text("Deep Learning-Based Fungi Detection System", 20, 42);
+
+      // Background Card Panel
+      doc.setFillColor(...light);
+      doc.roundedRect(15, 50, 180, 95, 6, 6, "F");
+
+      // Stable Canvas Extraction Strategy for Cross-Origin Image
+      const imgElement = document.querySelector(".result-image");
+      if (imgElement && imgElement.src) {
+          try {
+              const srcUrl = imgElement.src;
+              const getBase64FromUrl = async (url) => {
+                  const data = await fetch(url);
+                  const blob = await data.blob();
+                  return new Promise((resolve) => {
+                      const reader = new FileReader();
+                      reader.readAsDataURL(blob);
+                      reader.onloadend = () => resolve(reader.result);
+                  });
+              };
+              const base64Img = await getBase64FromUrl(srcUrl);
+              doc.addImage(base64Img, "JPEG", 25, 65, 55, 55);
+          } catch (e) {
+              // Fallback block if canvas/cors is blocked
+              doc.setDrawColor(200, 200, 200);
+              doc.rect(25, 65, 55, 55, "S");
+              doc.setFontSize(9);
+              doc.text("[Image Missing]", 40, 93);
+          }
+      }
+
+      // Card Header Title
+      doc.setTextColor(...blue);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(16);
+      doc.text("Prediction Result", 95, 68);
+
+      // Dynamic Meta Content Injection
+      doc.setTextColor(...dark);
+      doc.setFontSize(11);
+      doc.text("Predicted Fungi:", 95, 82);
+
+      doc.setTextColor(...blue);
+      doc.setFontSize(18);
+      const fungiName = "{{ prediction }}";
+      const wrappedName = doc.splitTextToSize(fungiName, 85);
+      doc.text(wrappedName, 95, 93);
+
+      doc.setTextColor(...dark);
+      doc.setFontSize(11);
+      doc.text("Confidence Score:", 95, 118);
+
+      {% if prediction == "Unknown" %}
+        doc.setTextColor(220, 53, 69);
+      {% else %}
+        doc.setTextColor(16, 185, 129);
+      {% endif %}
+      doc.setFontSize(16);
+      doc.text("{{ confidence }}%", 132, 118);
+
+      // AI Analysis Insight Box Section
+      doc.setFillColor(240, 247, 255);
+      doc.roundedRect(15, 160, 180, 42, 6, 6, "F");
+
+      doc.setTextColor(...blue);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(13);
+      doc.text("Quick AI Insight", 25, 173);
+
+      doc.setTextColor(...dark);
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(10);
+
+      {% if prediction == 'Candida albicans' %}
+          const insight = "Candida albicans may cause fungal infections when overgrown inside the human body.";
+      {% elif prediction == 'Epidermophyton floccosum' %}
+          const insight = "Epidermophyton floccosum commonly infects skin and nails in humid environments.";
+      {% elif prediction == 'Trichophyton mentagrophytes' %}
+          const insight = "Trichophyton mentagrophytes is associated with athlete's foot and ringworm infection.";
+      {% elif prediction == 'Trichophyton rubrum' %}
+          const insight = "Trichophyton rubrum is one of the most common dermatophyte fungi worldwide.";
+      {% else %}
+          const insight = "Unknown fungi detected.";
+      {% endif %}
+
+      const wrappedInsight = doc.splitTextToSize(insight, 160);
+      doc.text(wrappedInsight, 25, 184);
+
+      // Structural Breakdown Section
+      doc.setTextColor(...blue);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(14);
+      doc.text("Detailed Information", 20, 222);
+
+      doc.setTextColor(...dark);
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(11);
+
+      {% if prediction == 'Candida albicans' %}
+          const details = ["Category: Yeast Fungus", "Common Infection: Candidiasis", "Habitat: Human Body", "Risk Level: Medium"];
+      {% elif prediction == 'Epidermophyton floccosum' %}
+          const details = ["Category: Dermatophyte", "Common Infection: Jock Itch", "Habitat: Human Skin", "Risk Level: Medium"];
+      {% elif prediction == 'Trichophyton mentagrophytes' %}
+          const details = ["Category: Dermatophyte", "Common Infection: Ringworm", "Habitat: Human Skin", "Risk Level: Medium"];
+      {% elif prediction == 'Trichophyton rubrum' %}
+          const details = ["Category: Dermatophyte", "Common Infection: Athlete's Foot", "Habitat: Human Skin", "Risk Level: Medium"];
+      {% else %}
+          const details = ["No detailed information available"];
+      {% endif %}
+
+      let currentY = 234;
+      details.forEach(item => {
+          doc.text("• " + item, 25, currentY);
+          currentY += 8;
+      });
+
+      // System Meta Timestamps
+      doc.setTextColor(...gray);
+      doc.setFontSize(9);
+      doc.text("Generated Date: " + new Date().toLocaleString(), 20, 278);
+
+      // Clean Bottom Rule Line & Footer Branding
+      doc.setDrawColor(230, 230, 230);
+      doc.line(20, 283, 190, 283);
+      doc.text("Generated by FungiVision AI System", 20, 290);
+
+      doc.save("fungivision_report.pdf");
+  }
+</script>
+
+{% endblock %}

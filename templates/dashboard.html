@@ -1,0 +1,505 @@
+{% extends "base.html" %} {% block content %}
+
+<div class="dashboard-hero">
+  <div class="dashboard-icon">
+    <i class="fas fa-microscope animate-pulse"></i>
+  </div>
+  <h1 class="dashboard-title">Fungi Analytics Intelligence</h1>
+  <p class="dashboard-subtitle">
+    Advanced mycological mapping, AI pathogen distribution, and dynamic
+    confidence diagnostics calculated on {{ current_date }}.
+  </p>
+</div>
+
+<div class="row g-4 mb-4">
+  <div class="col-xl-3 col-md-6">
+    <div class="custom-card gauge-card">
+      <div class="gauge-circle">
+        <svg viewBox="0 0 160 160">
+          <defs>
+            <linearGradient
+              id="gradientGauge"
+              x1="0%"
+              y1="0%"
+              x2="100%"
+              y2="100%"
+            >
+              <stop offset="0%" stop-color="#00f2fe" />
+              <stop offset="100%" stop-color="#4facfe" />
+            </linearGradient>
+          </defs>
+          <circle cx="80" cy="80" r="58" class="gauge-bg"></circle>
+          <circle
+            cx="80"
+            cy="80"
+            r="58"
+            class="progress-circle"
+            style="stroke-dashoffset: calc(365 - (365 * {{ overall_accuracy|default(0) }}) / 100);"
+          ></circle>
+        </svg>
+        <div class="gauge-text">{{ overall_accuracy|default(0) }}%</div>
+      </div>
+      <h5 class="card-label">Overall Accuracy</h5>
+    </div>
+  </div>
+
+  <div class="col-xl-3 col-md-6">
+    <div class="custom-card stats-card border-blue">
+      <div class="stats-icon bg-gradient-blue">
+        <i class="fas fa-file-medical-alt"></i>
+      </div>
+      <h2 class="stats-number">{{ total_predictions|default(0) }}</h2>
+      <p class="card-label">Total Analyzed Cases</p>
+    </div>
+  </div>
+
+  <div class="col-xl-3 col-md-6">
+    <div class="custom-card stats-card border-green">
+      <div class="stats-icon bg-gradient-green">
+        <i class="fas fa-shield-virus"></i>
+      </div>
+      <h2 class="stats-number text-green">
+        {{ high_confidence_cases|default(0) }}
+      </h2>
+      <p class="card-label">High Confidence Matches</p>
+    </div>
+  </div>
+
+  <div class="col-xl-3 col-md-6">
+    <div class="custom-card stats-card border-pink">
+      <div class="stats-icon bg-gradient-pink">
+        <i class="fas fa-dna"></i>
+      </div>
+      <h2 class="stats-number text-pink">{{ fungus_classes|default(4) }}</h2>
+      <p class="card-label">Active Pathogen Classes</p>
+    </div>
+  </div>
+</div>
+
+<div id="analytics-section">
+  <div class="row g-4 mb-4">
+    <div class="col-lg-6">
+      <div class="custom-card chart-md">
+        <div class="chart-header">
+          <h3 class="chart-title">
+            <i class="fas fa-chart-pie me-2"></i>Pathogen Prevalence
+          </h3>
+          <span class="mini-badge bg-blue">Real Doughnut</span>
+        </div>
+        <div class="chart-container">
+          <canvas id="detectionChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="custom-card chart-md">
+        <div class="chart-header">
+          <h3 class="chart-title">
+            <i class="fas fa-chart-bar me-2"></i>Per-Class Confidence Accuracy
+          </h3>
+          <span class="mini-badge bg-green">Real Horizontal Bar</span>
+        </div>
+        <div class="chart-container">
+          <canvas id="confidenceChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4 mb-4">
+    <div class="col-lg-7">
+      <div class="custom-card chart-md">
+        <div class="chart-header">
+          <h3 class="chart-title">
+            <i class="fas fa-chart-area me-2"></i>Analysis Timeline Activity
+          </h3>
+          <span class="mini-badge bg-purple">Real Trends Line</span>
+        </div>
+        <div class="chart-container">
+          <canvas id="distributionChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-5">
+      <div class="custom-card chart-md">
+        <div class="chart-header">
+          <h3 class="chart-title">
+            <i class="fas fa-spider me-2"></i>Fungi Proportional Density
+          </h3>
+          <span class="mini-badge bg-orange">Radar Intelligence</span>
+        </div>
+        <div class="chart-container">
+          <canvas id="radarChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  window.onload = function () {
+    Chart.defaults.font.family = "Poppins";
+    Chart.defaults.color = "#64748b";
+
+    // 1. PENETAPAN SENARAI KELAS PATOGEN SEPADAN DENGAN DB APP.PY
+    const labels = [
+      "Candida albicans",
+      "Epidermophyton floccosum",
+      "Trichophyton mentagrophytes",
+      "Trichophyton rubrum",
+      "Unknown"
+    ];
+
+    // 2. MENANGKAP NILAI BILANGAN KES (COUNTS) REAL DARI BACKEND
+    const counts = [
+      {{ candida_count|default(0) }},
+      {{ epidermo_count|default(0) }},
+      {{ mentagrophytes_count|default(0) }},
+      {{ rubrum_count|default(0) }},
+      {{ unknown_count|default(0) }}
+    ];
+
+    // 3. MENANGKAP NILAI PURATA CONFIDENCE (AVG) REAL DARI BACKEND
+    const confidence = [
+      {{ candida_avg|default(0) }},
+      {{ epidermo_avg|default(0) }},
+      {{ mentagrophytes_avg|default(0) }},
+      {{ rubrum_avg|default(0) }},
+      {{ unknown_avg|default(0) }}
+    ];
+
+    // 4. DATA TIMELINE HARIAN REAL DARI SQLITE HISTORY
+    const timelineLabels = {{ timeline_labels | tojson if timeline_labels else [] }};
+    const timelineValues = {{ timeline_values | tojson if timeline_values else [] }};
+
+    /* -------------------------------------------
+       CARTA 1: PATHOGEN PREVALENCE (DOUGHNUT)
+       ------------------------------------------- */
+    new Chart(document.getElementById("detectionChart"), {
+      type: "doughnut",
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            data: counts, // Real Data Applied
+            backgroundColor: [
+              "#0ea5e9",
+              "#22c55e",
+              "#a855f7",
+              "#f43f5e",
+              "#64748b",
+            ],
+            borderWidth: 5,
+            borderColor: "#ffffff",
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: "75%",
+        plugins: {
+          legend: {
+            position: "bottom",
+            labels: { padding: 15, usePointStyle: true },
+          },
+        },
+      },
+    });
+
+    /* -------------------------------------------
+       CARTA 2: PER-CLASS CONFIDENCE ACCURACY (BAR)
+       ------------------------------------------- */
+    new Chart(document.getElementById("confidenceChart"), {
+      type: "bar",
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: "Avg Confidence (%)",
+            data: confidence, // Real Data Applied
+            backgroundColor: [
+              "#0ea5e9",
+              "#22c55e",
+              "#a855f7",
+              "#f43f5e",
+              "#cbd5e1",
+            ],
+            borderRadius: 12,
+            barThickness: 20,
+          },
+        ],
+      },
+      options: {
+        indexAxis: "y",
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { beginAtZero: true, max: 100 },
+          y: { grid: { display: false } },
+        },
+      },
+    });
+
+    /* -------------------------------------------
+       CARTA 3: ANALYSIS TIMELINE ACTIVITY (LINE TRENDS)
+       ------------------------------------------- */
+    // Diubahsuai menjadi Carta Garisan Aliran Kes mengikut tarikh input dalam fungi.db
+    new Chart(document.getElementById("distributionChart"), {
+      type: "line",
+      data: {
+        labels: timelineLabels, // Real Timeline Dates
+        datasets: [
+          {
+            label: "Scans Per Day",
+            data: timelineValues, // Real Daily Scan Volume
+            borderColor: "#a855f7",
+            backgroundColor: "rgba(168, 85, 247, 0.08)",
+            tension: 0.35,
+            fill: true,
+            pointRadius: 4,
+            pointBackgroundColor: "#a855f7"
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { beginAtZero: true, ticks: { stepSize: 1 } },
+          x: { grid: { display: false } }
+        },
+      },
+    });
+
+    /* -------------------------------------------
+       CARTA 4: FUNGI RISK PROFILE (RADAR)
+       ------------------------------------------- */
+    new Chart(document.getElementById("radarChart"), {
+      type: "radar",
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: "Relative Density",
+            data: counts, // Real Densities Applied
+            backgroundColor: "rgba(244, 63, 94, 0.15)",
+            borderColor: "#f43f5e",
+            pointBackgroundColor: "#f43f5e",
+            fill: true,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          r: { beginAtZero: true, ticks: { stepSize: 1 } }
+        }
+      },
+    });
+  };
+</script>
+
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap");
+
+  body {
+    font-family: "Poppins", sans-serif;
+    background: radial-gradient(circle at top right, #f8faff 0%, #f0f4f9 100%);
+    color: #1e293b;
+  }
+
+  .dashboard-hero {
+    background: white;
+    border-radius: 30px;
+    padding: 35px 30px;
+    margin: 25px 0 20px 0;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+  }
+  .dashboard-icon {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 15px;
+    border-radius: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    color: white;
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  }
+  .dashboard-title {
+    font-size: 34px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #0f172a 30%, #4facfe 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .dashboard-subtitle {
+    font-size: 14.5px;
+    color: #64748b;
+  }
+
+  .custom-card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    border-radius: 28px;
+    padding: 26px;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.03);
+    height: 100%;
+  }
+  .stats-card {
+    position: relative;
+    overflow: hidden;
+  }
+  .stats-card::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 6px;
+  }
+  .border-blue::before {
+    background: #0ea5e9;
+  }
+  .border-green::before {
+    background: #22c55e;
+  }
+  .border-pink::before {
+    background: #f43f5e;
+  }
+
+  .stats-icon {
+    width: 55px;
+    height: 55px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: white;
+    margin-bottom: 12px;
+  }
+  .bg-gradient-blue {
+    background: linear-gradient(135deg, #3b82f6, #0ea5e9);
+  }
+  .bg-gradient-green {
+    background: linear-gradient(135deg, #10b981, #22c55e);
+  }
+  .bg-gradient-pink {
+    background: linear-gradient(135deg, #ec4899, #f43f5e);
+  }
+
+  .stats-number {
+    font-size: 38px;
+    font-weight: 800;
+    color: #0f172a;
+  }
+  .card-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+  }
+
+  .gauge-card {
+    text-align: center;
+  }
+  .gauge-circle {
+    position: relative;
+    width: 110px;
+    height: 110px;
+    margin: 0 auto 10px;
+  }
+  .gauge-circle svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+  }
+  .gauge-bg {
+    fill: none;
+    stroke: #f1f5f9;
+    stroke-width: 14;
+  }
+  .progress-circle {
+    fill: none;
+    stroke: url(#gradientGauge);
+    stroke-width: 14;
+    stroke-linecap: round;
+    stroke-dasharray: 365;
+    transition: stroke-dashoffset 0.8s ease-in-out;
+  }
+  .gauge-text {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: 800;
+    color: #0f172a;
+  }
+
+  .chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  .chart-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: #0f172a;
+  }
+  .chart-container {
+    position: relative;
+    height: 245px;
+    width: 100%;
+  }
+  .mini-badge {
+    padding: 5px 12px;
+    border-radius: 50px;
+    font-size: 10px;
+    font-weight: 700;
+    color: white;
+    text-transform: uppercase;
+  }
+  .bg-blue {
+    background: #0ea5e9;
+  }
+  .bg-green {
+    background: #22c55e;
+  }
+  .bg-purple {
+    background: #a855f7;
+  }
+  .bg-orange {
+    background: #f97316;
+  }
+
+  .animate-pulse {
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+</style>
+
+{% endblock %}

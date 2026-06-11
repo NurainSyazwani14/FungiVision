@@ -1,0 +1,548 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class="container py-5">
+  <!-- ========================= ABOUT HERO ========================= -->
+  <div class="about-hero mb-5">
+    <div class="about-icon mb-3">
+      <i class="fas fa-circle-info text-white"></i>
+    </div>
+    <h1 class="about-title">About FungiVision AI</h1>
+    <p class="about-subtitle">
+      An advanced medical-grade intelligence platform dedicated to the automated
+      detection, classification, and micro-analytics of microscopic fungi
+      species.
+    </p>
+  </div>
+
+  <!-- ========================= SYSTEM OVERVIEW & METRICS ========================= -->
+  <div class="row g-4 mb-5">
+    <!-- Quick Analytics 1 -->
+    <div class="col-md-4">
+      <div class="metric-card shadow-sm text-center p-4">
+        <div class="metric-icon text-primary">
+          <i class="fas fa-microscope"></i>
+        </div>
+        <h3 class="metric-value mt-2">4+ Species</h3>
+        <p class="metric-label mb-0">Supported Fungi Classes</p>
+      </div>
+    </div>
+    <!-- Quick Analytics 2 -->
+    <div class="col-md-4">
+      <div class="metric-card shadow-sm text-center p-4">
+        <div class="metric-icon text-success"><i class="fas fa-bolt"></i></div>
+        <h3 class="metric-value mt-2">&lt; 2.0s</h3>
+        <p class="metric-label mb-0">Real-Time Inference Speed</p>
+      </div>
+    </div>
+    <!-- Quick Analytics 3 -->
+    <div class="col-md-4">
+      <div class="metric-card shadow-sm text-center p-4">
+        <div class="metric-icon text-info">
+          <i class="fas fa-shield-halved"></i>
+        </div>
+        <h3 class="metric-value mt-2">MobileNetV2</h3>
+        <p class="metric-label mb-0">High-Efficiency Core Architecture</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================= CORE CAPABILITIES ========================= -->
+  <div class="about-card shadow-sm mb-5">
+    <h3 class="section-title mb-4 text-center text-md-start">
+      <i class="fas fa-cubes me-2 text-primary"></i>
+      Core System Capabilities
+    </h3>
+
+    <div class="row g-4">
+      <!-- Feature 1 -->
+      <div class="col-md-4">
+        <div class="feature-box p-3 h-100">
+          <div class="feature-icon">
+            <i class="fas fa-upload text-primary"></i>
+          </div>
+          <h5>Instant Evaluation</h5>
+          <p class="small text-muted mb-0">
+            Seamlessly upload digital microscopic images and receive processing
+            assessments instantly via computer vision protocols.
+          </p>
+        </div>
+      </div>
+      <!-- Feature 2 -->
+      <div class="col-md-4">
+        <div class="feature-box p-3 h-100">
+          <div class="feature-icon">
+            <i class="fas fa-chart-pie text-success"></i>
+          </div>
+          <h5>Confidence Analytics</h5>
+          <p class="small text-muted mb-0">
+            Interpret complex deep learning predictions through clear
+            probability scores, threshold flags, and metrics visualizations.
+          </p>
+        </div>
+      </div>
+      <!-- Feature 3 -->
+      <div class="col-md-4">
+        <div class="feature-box p-3 h-100">
+          <div class="feature-icon">
+            <i class="fas fa-file-medical text-info"></i>
+          </div>
+          <h5>Diagnostic Export</h5>
+          <p class="small text-muted mb-0">
+            Generate, review, and compile formal structured PDF documentation
+            including metadata stamps for laboratory archiving.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================= DETAILED ACCORDION ========================= -->
+  <div class="accordion custom-accordion" id="aboutAccordion">
+    <!-- PROJECT SCOPE -->
+    <div
+      class="accordion-item shadow-sm mb-3 border-0 rounded-4 overflow-hidden"
+    >
+      <h2 class="accordion-header">
+        <button
+          class="accordion-button fw-bold"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapseOne"
+        >
+          <i class="fas fa-graduation-cap me-2 text-primary"></i>
+          Project Framework & Purpose
+        </button>
+      </h2>
+      <div
+        id="collapseOne"
+        class="accordion-collapse collapse show"
+        data-bs-parent="#aboutAccordion"
+      >
+        <div class="accordion-body">
+          <p>
+            <strong>FungiVision</strong> bridges the gap between conventional
+            laboratory microscopy and modern machine learning frameworks.
+            Designed primarily as a clinical supportive instrument, the
+            interface streamlines the classification workflow of specialized
+            digital smears.
+          </p>
+          <p class="mb-0">
+            By embedding custom automated pipelines, the dashboard offers
+            structured data logs, historical diagnostic trend trackers, and
+            real-time inference summaries tailored for research, academic
+            exploration, and laboratory proof-of-concepts.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- DATASET -->
+    <div
+      class="accordion-item shadow-sm mb-3 border-0 rounded-4 overflow-hidden"
+    >
+      <h2 class="accordion-header">
+        <button
+          class="accordion-button collapsed fw-bold"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapseTwo"
+        >
+          <i class="fas fa-database me-2 text-success"></i>
+          Dataset Scope & Verified Species
+        </button>
+      </h2>
+      <div
+        id="collapseTwo"
+        class="accordion-collapse collapse"
+        data-bs-parent="#aboutAccordion"
+      >
+        <div class="accordion-body">
+          <p>
+            The underlying classification layer is trained on localized sets
+            extracted from micro-imaging databases, standardizing spatial
+            textures and morphological variations into verified structural
+            categories.
+          </p>
+
+          <p class="fw-bold text-dark mb-2">
+            <i class="fas fa-tags me-2 text-success"></i>Classified Core
+            Categories:
+          </p>
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <ul class="fungi-list mb-0">
+                <li>
+                  <i class="fas fa-check-circle text-success me-2"></i>Candida
+                  albicans
+                </li>
+                <li>
+                  <i class="fas fa-check-circle text-success me-2"></i
+                  >Epidermophyton floccosum
+                </li>
+              </ul>
+            </div>
+            <div class="col-md-6">
+              <ul class="fungi-list mb-0">
+                <li>
+                  <i class="fas fa-check-circle text-success me-2"></i
+                  >Trichophyton mentagrophytes
+                </li>
+                <li>
+                  <i class="fas fa-check-circle text-success me-2"></i
+                  >Trichophyton rubrum
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="dataset-box d-flex align-items-center">
+            <i class="fas fa-circle-nodes text-primary me-3 fs-4"></i>
+            <div>
+              <p class="small text-muted mb-0">Repository Reference Source</p>
+              <a
+                href="https://www.kaggle.com/datasets/anshtanwar/microscopic-fungi-images"
+                target="_blank"
+                class="dataset-link"
+              >
+                Microscopic Fungi Images Dataset (Kaggle Hub)
+                <i class="fas fa-arrow-up-right-from-square ms-1 small"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TECHNICAL -->
+    <div
+      class="accordion-item shadow-sm mb-3 border-0 rounded-4 overflow-hidden"
+    >
+      <h2 class="accordion-header">
+        <button
+          class="accordion-button collapsed fw-bold"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapseThree"
+        >
+          <i class="fas fa-code me-2 text-info"></i>
+          Technical Infrastructure Stack
+        </button>
+      </h2>
+      <div
+        id="collapseThree"
+        class="accordion-collapse collapse"
+        data-bs-parent="#aboutAccordion"
+      >
+        <div class="accordion-body">
+          <div class="tech-grid mb-4">
+            <span class="tech-badge"
+              ><i class="fab fa-python me-1"></i> Python</span
+            >
+            <span class="tech-badge"
+              ><i class="fas fa-brain me-1"></i> TensorFlow</span
+            >
+            <span class="tech-badge"
+              ><i class="fas fa-network-wired me-1"></i> CNN</span
+            >
+            <span class="tech-badge"
+              ><i class="fas fa-mobile-screen me-1"></i> MobileNetV2</span
+            >
+            <span class="tech-badge"
+              ><i class="fas fa-flask me-1"></i> Flask Framework</span
+            >
+            <span class="tech-badge"
+              ><i class="fas fa-database me-1"></i> SQLite3</span
+            >
+            <span class="tech-badge"
+              ><i class="fab fa-bootstrap me-1"></i> Bootstrap 5</span
+            >
+            <span class="tech-badge"
+              ><i class="fas fa-chart-line me-1"></i> Chart.js</span
+            >
+          </div>
+
+          <div class="technical-info">
+            <!-- AI Engine -->
+            <div class="tech-item">
+              <h6>
+                <i class="fas fa-gears me-2 text-primary"></i>Neural Engine
+                Layer
+              </h6>
+              <p>
+                Leverages deep Convolutional Neural Networks (CNN) using
+                optimized weights from MobileNetV2. This spatial classification
+                paradigm handles low-contrast cellular artifacts while
+                preventing high computational overhead during target image
+                matrix evaluations.
+              </p>
+            </div>
+            <!-- API Execution -->
+            <div class="tech-item">
+              <h6>
+                <i class="fas fa-server me-2 text-success"></i>Routing &
+                Pipeline Integration
+              </h6>
+              <p>
+                Driven by a specialized Python Flask micro-framework back-end to
+                pipeline byte streams, interface securely with relational SQLite
+                relational storage units, and deliver rapid predictions back to
+                user dashboards dynamically.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================= SYSTEM CUSTOM STYLES ========================= -->
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
+
+  body {
+    font-family: "Inter", sans-serif;
+    background: linear-gradient(135deg, #f4f8fc, #eff4f9, #f7fafc);
+    color: #1e293b;
+  }
+
+  /* HERO COMPONENT */
+  .about-hero {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(12px);
+    border-radius: 24px;
+    padding: 40px 30px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(230, 235, 242, 0.8);
+  }
+
+  .about-hero::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(to right, #0077ff, #00d4ff);
+  }
+
+  .about-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    background: linear-gradient(135deg, #0077ff, #00bfff);
+    box-shadow: 0 8px 20px rgba(0, 119, 255, 0.2);
+  }
+
+  .about-title {
+    font-size: 32px;
+    font-weight: 800;
+    color: #0f172a;
+    letter-spacing: -0.5px;
+  }
+
+  .about-subtitle {
+    font-size: 14px;
+    color: #64748b;
+    max-width: 620px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* METRIC CARDS */
+  .metric-card {
+    background: white;
+    border-radius: 20px;
+    border: 1px solid #e2e8f0;
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .metric-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.06) !important;
+  }
+
+  .metric-icon {
+    font-size: 28px;
+  }
+
+  .metric-value {
+    font-size: 24px;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 2px;
+  }
+
+  .metric-label {
+    font-size: 13px;
+    color: #64748b;
+    font-weight: 500;
+  }
+
+  /* ABOUT CARDS & FEATURES */
+  .about-card {
+    background: white;
+    border-radius: 24px;
+    padding: 35px;
+    border: 1px solid #e2e8f0;
+  }
+
+  .section-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #0f172a;
+  }
+
+  .feature-box {
+    background: #f8fafc;
+    border-radius: 16px;
+    border: 1px solid #f1f5f9;
+    transition: background 0.2s;
+  }
+
+  .feature-box:hover {
+    background: #f1f5f9;
+  }
+
+  .feature-icon {
+    font-size: 22px;
+    margin-bottom: 12px;
+  }
+
+  .feature-box h5 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 6px;
+  }
+
+  /* ACCORDION PATTERNS */
+  .custom-accordion .accordion-item {
+    border: 1px solid #e2e8f0 !important;
+    background: white;
+  }
+
+  .custom-accordion .accordion-button {
+    background: white;
+    font-size: 16px;
+    font-weight: 700;
+    padding: 20px 24px;
+    color: #1e293b;
+    box-shadow: none;
+  }
+
+  .custom-accordion .accordion-button:not(.collapsed) {
+    background: #f0f7ff;
+    color: #0077ff;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .custom-accordion .accordion-body {
+    padding: 24px 28px;
+    color: #475569;
+    line-height: 1.7;
+    font-size: 14px;
+  }
+
+  /* TECH LABELS & LISTS */
+  .tech-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .tech-badge {
+    background: #f1f5f9;
+    color: #334155;
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    border: 1px solid #e2e8f0;
+  }
+
+  .technical-info {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .tech-item {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 18px;
+  }
+
+  .tech-item h6 {
+    font-size: 14px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 6px;
+  }
+
+  .tech-item p {
+    font-size: 13px;
+    color: #64748b;
+    margin-bottom: 0;
+    line-height: 1.6;
+  }
+
+  .fungi-list {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  .fungi-list li {
+    font-size: 14px;
+    color: #475569;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+  }
+
+  .dataset-box {
+    background: #f0f7ff;
+    border: 1px dashed #bfdbfe;
+    border-radius: 14px;
+    padding: 14px 18px;
+  }
+
+  .dataset-link {
+    color: #0077ff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  .dataset-link:hover {
+    text-decoration: underline;
+  }
+
+  /* MOBILE BREAKPOINTS */
+  @media (max-width: 768px) {
+    .about-title {
+      font-size: 26px;
+    }
+    .about-card {
+      padding: 20px;
+    }
+    .custom-accordion .accordion-button {
+      padding: 16px;
+      font-size: 15px;
+    }
+    .custom-accordion .accordion-body {
+      padding: 16px;
+    }
+  }
+</style>
+{% endblock %}

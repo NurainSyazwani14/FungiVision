@@ -1,0 +1,43 @@
+/* DESKTOP */
+
+.title-main {
+  display: block;
+
+  font-size: 52px;
+
+  font-weight: 700;
+
+  color: #0d1b2a;
+
+  letter-spacing: 1px;
+}
+
+.title-gradient {
+  display: block;
+
+  font-size: 48px;
+
+  font-weight: 700;
+
+  background: linear-gradient(to right, #0077b6, #00b4d8);
+
+  background-clip: text;
+  -webkit-background-clip: text;
+
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+
+  text-shadow: 0 8px 25px rgba(0, 180, 216, 0.2);
+}
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+  .title-main {
+    font-size: 36px;
+  }
+
+  .title-gradient {
+    font-size: 32px;
+  }
+}

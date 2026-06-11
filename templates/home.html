@@ -1,0 +1,918 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class="home-page">
+  <div class="bg-glow glow-1"></div>
+  <div class="bg-glow glow-2"></div>
+  <div class="bg-glow glow-3"></div>
+
+  <section class="hero-section container">
+    <div class="hero-card">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-6 ordering-mobile-text">
+          <div class="ai-badge">
+            <i class="fas fa-brain animate-pulse-slow"></i>
+            AI-Powered Fungal Classification
+          </div>
+
+          <h1 class="hero-title">
+            Smart Fungal Detection,
+            <span>Accurate Species Classification.</span>
+          </h1>
+
+          <p class="hero-description">
+            FungiVision leverages advanced MobileNet deep learning models to
+            seamlessly identify high-risk fungal pathogens from microscopic
+            images. Upload your sample to extract critical mycological insights
+            instantly.
+          </p>
+
+          <div class="hero-buttons">
+            <a href="/prediction" class="btn hero-btn-primary">
+              <i class="fas fa-play me-2"></i>Start Prediction
+            </a>
+            <a href="/dashboard" class="btn hero-btn-secondary">
+              <i class="fas fa-chart-pie me-2"></i>View Dashboard
+            </a>
+            <div class="live-status">
+              <span class="live-dot"></span>
+              AI Core Online
+            </div>
+          </div>
+
+          <div class="hero-stats">
+            <div class="stat-box">
+              <h3>98%</h3>
+              <p>Model Accuracy</p>
+            </div>
+            <div class="stat-box">
+              <h3>4</h3>
+              <p>Core Species</p>
+            </div>
+            <div class="stat-box">
+              <h3>&lt; 2s</h3>
+              <p>Engine Speed</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6 ordering-mobile-img">
+          <div class="scanner-container">
+            <img
+              src="{{ url_for('static', filename='images/fungi.jpg') }}"
+              class="scanner-image"
+              alt="Microscopic Fungi Specimen"
+            />
+            <div class="scanner-overlay"></div>
+            <div class="scanner-line"></div>
+
+            <div class="species-card">
+              <div class="species-label">
+                <i class="fas fa-microscope me-1"></i> Pathogen Detected
+              </div>
+              <h2>Aspergillus niger</h2>
+              <div class="confidence-text">Confidence: <span>97.8%</span></div>
+              <div class="confidence-bar">
+                <div class="confidence-fill"></div>
+              </div>
+              <div class="high-confidence">
+                <i class="fas fa-check-circle me-1"></i> Verified High Match
+              </div>
+            </div>
+
+            <div class="scan-status">
+              <div class="loader"></div>
+              <div>
+                <strong>Scanning Active</strong>
+                <p>System Optimized</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container features-section">
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="feature-card border-glow-blue">
+          <div class="feature-icon text-blue">
+            <i class="fas fa-robot"></i>
+          </div>
+          <h4>Neural Network</h4>
+          <p>
+            State-of-the-art MobileNetV2 architecture fine-tuned for deep
+            microbiological analysis.
+          </p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="feature-card border-glow-amber">
+          <div class="feature-icon text-warning">
+            <i class="fas fa-bolt"></i>
+          </div>
+          <h4>Real-Time Sync</h4>
+          <p>
+            Instantaneous diagnostic arrays connected dynamically to your
+            personal clinical database.
+          </p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="feature-card border-glow-pink">
+          <div class="feature-icon text-pink">
+            <i class="fas fa-chart-bar"></i>
+          </div>
+          <h4>Live Telemetry</h4>
+          <p>
+            Comprehensive dashboard visualization displaying automated counts,
+            ratios, and risk curves.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container process-section">
+    <div class="section-title text-center">
+      <h2>How FungiVision Operates</h2>
+      <p>
+        A refined 3-step pipeline converting high-resolution specimens into
+        definitive analytical charts.
+      </p>
+    </div>
+
+    <div class="row g-4 mt-2">
+      <div class="col-md-4">
+        <div class="process-card">
+          <div class="step-badge">PIPELINE 01</div>
+          <div class="process-icon-wrap bg-soft-blue">
+            <i class="fas fa-cloud-upload-alt text-blue"></i>
+          </div>
+          <h4>Injest Specimen Image</h4>
+          <p>
+            Upload raw microscopic photos or capture clean camera outputs
+            straight into the web interface.
+          </p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="process-card">
+          <div class="step-badge">PIPELINE 02</div>
+          <div class="process-icon-wrap bg-soft-purple">
+            <i class="fas fa-brain text-purple"></i>
+          </div>
+          <h4>AI Deep Inference</h4>
+          <p>
+            The system normalizes metrics, processes tensors, and extracts
+            spatial classification matrices.
+          </p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="process-card">
+          <div class="step-badge">PIPELINE 03</div>
+          <div class="process-icon-wrap bg-soft-green">
+            <i class="fas fa-poll text-green"></i>
+          </div>
+          <h4>Telemetry Rendering</h4>
+          <p>
+            Instantly locks inputs into logs and updates metrics across your
+            dynamic live data grid.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container fungi-section mb-5">
+    <div class="section-title text-center">
+      <h2>Recognized Fungi Classifications</h2>
+      <p>
+        Targeted pathogen variants completely integrated into our current
+        trained weights repository.
+      </p>
+    </div>
+
+    <div class="row g-4 mt-2">
+      <div class="col-xl-3 col-md-6">
+        <div class="fungi-card-home">
+          <div class="fungi-img-wrapper">
+            <img
+              src="{{ url_for('static', filename='images/candida1.jpg') }}"
+              class="fungi-image"
+              alt="Candida albicans"
+            />
+          </div>
+          <h5>Candida albicans</h5>
+          <span class="category-tag tag-blue">Yeast Pathogen</span>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-md-6">
+        <div class="fungi-card-home">
+          <div class="fungi-img-wrapper">
+            <img
+              src="{{ url_for('static', filename='images/epidermophyton.jpg') }}"
+              class="fungi-image"
+              alt="Epidermophyton floccosum"
+            />
+          </div>
+          <h5>Epidermophyton floccosum</h5>
+          <span class="category-tag tag-green">Dermatophyte</span>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-md-6">
+        <div class="fungi-card-home">
+          <div class="fungi-img-wrapper">
+            <img
+              src="{{ url_for('static', filename='images/mentagrophytes.jpg') }}"
+              class="fungi-image"
+              alt="Trichophyton mentagrophytes"
+            />
+          </div>
+          <h5>Trichophyton mentagrophytes</h5>
+          <span class="category-tag tag-purple">Dermatophyte</span>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-md-6">
+        <div class="fungi-card-home">
+          <div class="fungi-img-wrapper">
+            <img
+              src="{{ url_for('static', filename='images/rubrum.jpg') }}"
+              class="fungi-image"
+              alt="Trichophyton rubrum"
+            />
+          </div>
+          <h5>Trichophyton rubrum</h5>
+          <span class="category-tag tag-pink">Dermatophyte</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap");
+
+  body {
+    font-family: "Poppins", sans-serif;
+    background: radial-gradient(circle at top right, #f8faff 0%, #f0f4f9 100%);
+    color: #1e293b;
+    overflow-x: hidden;
+  }
+
+  .home-page {
+    position: relative;
+    min-height: 100vh;
+  }
+
+  /* ACCENT RADIANT GLOW BULBS */
+  .bg-glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(130px);
+    opacity: 0.25;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .glow-1 {
+    background: #3b82f6;
+    width: 450px;
+    height: 450px;
+    top: -50px;
+    left: -150px;
+  }
+  .glow-2 {
+    background: #a855f7;
+    width: 400px;
+    height: 400px;
+    bottom: 15%;
+    right: -150px;
+  }
+  .glow-3 {
+    background: #00f2fe;
+    width: 350px;
+    height: 350px;
+    top: 40%;
+    left: 30%;
+  }
+
+  /* CONTAINER CORE LAYOUTS */
+  .hero-section {
+    position: relative;
+    z-index: 2;
+    padding-top: 40px;
+  }
+
+  .hero-card {
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 40px;
+    padding: 60px;
+    box-shadow: 0 25px 60px rgba(15, 23, 42, 0.04);
+  }
+
+  /* TEXT ARCHITECTURE COMPONENTS */
+  .ai-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(
+      135deg,
+      rgba(59, 130, 246, 0.1),
+      rgba(14, 165, 233, 0.1)
+    );
+    color: #2563eb;
+    padding: 10px 22px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 13.5px;
+    letter-spacing: 0.3px;
+    margin-bottom: 25px;
+    border: 1px solid rgba(59, 130, 246, 0.15);
+  }
+
+  .hero-title {
+    font-size: 46px;
+    font-weight: 800;
+    line-height: 1.15;
+    color: #0f172a;
+    margin-bottom: 22px;
+    letter-spacing: -0.5px;
+  }
+  .hero-title span {
+    display: block;
+    background: linear-gradient(135deg, #2563eb 0%, #06b6d4 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero-description {
+    font-size: 15px;
+    line-height: 1.8;
+    color: #64748b;
+    max-width: 580px;
+    margin-bottom: 30px;
+  }
+
+  /* BUTTON ARRAYS */
+  .hero-buttons {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+  }
+
+  .hero-btn-primary {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    color: white !important;
+    border: none;
+    padding: 15px 35px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 15px;
+    box-shadow: 0 12px 25px rgba(37, 99, 235, 0.25);
+    transition: all 0.3s ease;
+  }
+  .hero-btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(37, 99, 235, 0.35);
+  }
+
+  .hero-btn-secondary {
+    background: white;
+    color: #1e293b !important;
+    border: 1px solid #e2e8f0;
+    padding: 15px 35px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 15px;
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.02);
+    transition: all 0.3s ease;
+  }
+  .hero-btn-secondary:hover {
+    transform: translateY(-3px);
+    background: #f8fafc;
+    border-color: #cbd5e1;
+  }
+
+  /* LIVE PULSER DOT */
+  .live-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #16a34a;
+    font-weight: 700;
+    font-size: 14px;
+  }
+  .live-dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: #22c55e;
+    animation: livePulse 2s infinite;
+  }
+
+  @keyframes livePulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+    }
+    100% {
+      box-shadow: 0 0 0 12px rgba(34, 197, 94, 0);
+    }
+  }
+
+  /* QUICK DATA TELEMETRY LOGS */
+  .hero-stats {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+  .stat-box {
+    background: white;
+    border-radius: 22px;
+    padding: 18px 28px;
+    min-width: 145px;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.02);
+  }
+  .stat-box h3 {
+    font-size: 28px;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 3px;
+  }
+  .stat-box p {
+    margin: 0;
+    color: #64748b;
+    font-size: 13.5px;
+    font-weight: 500;
+  }
+
+  /* GRAPHICAL HUD SCAN ENGINE */
+  .scanner-container {
+    width: 100%;
+    max-width: 500px;
+    height: 480px;
+    position: relative;
+    margin: 0 auto;
+    border-radius: 32px;
+    overflow: hidden;
+    border: 6px solid white;
+    box-shadow: 0 20px 45px rgba(15, 23, 42, 0.06);
+  }
+  .scanner-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .scanner-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(14, 165, 233, 0.02),
+      rgba(37, 99, 235, 0.08)
+    );
+  }
+
+  .scanner-line {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      #00f2fe,
+      #3b82f6,
+      #00f2fe,
+      transparent
+    );
+    box-shadow: 0 0 15px #00f2fe;
+    animation: scanningMotion 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  }
+
+  @keyframes scanningMotion {
+    0%,
+    100% {
+      top: 0%;
+    }
+    50% {
+      top: 100%;
+    }
+  }
+
+  /* HEADS UP DISPLAY (HUD) CARDS */
+  .species-card {
+    position: absolute;
+    top: 25px;
+    left: 25px;
+    width: 240px;
+    background: rgba(15, 23, 42, 0.9);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: white;
+    padding: 20px;
+    border-radius: 24px;
+    z-index: 10;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  }
+  .species-label {
+    color: #4ade80;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+  .species-card h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    font-family: inherit;
+    color: #fff;
+  }
+  .confidence-text {
+    font-size: 13px;
+    color: #94a3b8;
+    margin-bottom: 8px;
+  }
+  .confidence-text span {
+    color: #4ade80;
+    font-weight: 700;
+  }
+  .confidence-bar {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  .confidence-fill {
+    width: 97.8%;
+    height: 100%;
+    background: #4ade80;
+  }
+  .high-confidence {
+    color: #4ade80;
+    font-weight: 600;
+    font-size: 12.5px;
+  }
+
+  .scan-status {
+    position: absolute;
+    bottom: 25px;
+    right: 25px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    color: #0f172a;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 210px;
+    padding: 14px 18px;
+    border-radius: 20px;
+    z-index: 10;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  }
+  .scan-status strong {
+    font-size: 14px;
+    font-weight: 700;
+    display: block;
+    color: #0f172a;
+  }
+  .scan-status p {
+    margin: 0;
+    color: #2563eb;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .loader {
+    width: 22px;
+    height: 22px;
+    border: 3px solid #e2e8f0;
+    border-top-color: #2563eb;
+    border-radius: 50%;
+    animation: spinLoop 1s linear infinite;
+  }
+
+  @keyframes spinLoop {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* UTILITY FEATURE GRID BLOCK */
+  .features-section {
+    position: relative;
+    z-index: 2;
+    margin-top: 45px;
+  }
+  .feature-card {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(15px);
+    border-radius: 26px;
+    padding: 35px;
+    text-align: left;
+    height: 100%;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.02);
+    position: relative;
+    overflow: hidden;
+  }
+  .feature-card::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 5px;
+    opacity: 0.8;
+  }
+  .border-glow-blue::before {
+    background: #3b82f6;
+  }
+  .border-glow-amber::before {
+    background: #f59e0b;
+  }
+  .border-glow-pink::before {
+    background: #f43f5e;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 35px rgba(15, 23, 42, 0.05);
+  }
+  .feature-icon {
+    font-size: 32px;
+    margin-bottom: 20px;
+    display: inline-block;
+  }
+  .text-blue {
+    color: #2563eb;
+  }
+  .text-pink {
+    color: #f43f5e;
+  }
+  .feature-card h4 {
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 10px;
+    font-size: 20px;
+  }
+  .feature-card p {
+    color: #64748b;
+    margin: 0;
+    line-height: 1.6;
+    font-size: 14.5px;
+  }
+
+  /* WORKFLOW PROCESSING FRAME */
+  .process-section,
+  .fungi-section {
+    margin-top: 75px;
+    position: relative;
+    z-index: 2;
+  }
+  .section-title h2 {
+    font-size: 32px;
+    font-weight: 800;
+    color: #0f172a;
+    letter-spacing: -0.5px;
+  }
+  .section-title p {
+    color: #64748b;
+    margin-top: 8px;
+    font-size: 15px;
+  }
+
+  .process-card {
+    background: white;
+    border-radius: 28px;
+    padding: 40px 30px;
+    text-align: center;
+    height: 100%;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.02);
+    transition: all 0.3s ease;
+    border: 1px solid #f1f5f9;
+    position: relative;
+  }
+  .process-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(15, 23, 42, 0.05);
+  }
+
+  .process-icon-wrap {
+    width: 75px;
+    height: 75px;
+    border-radius: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    margin: 0 auto 22px;
+  }
+  .bg-soft-blue {
+    background: rgba(59, 130, 246, 0.08);
+  }
+  .bg-soft-purple {
+    background: rgba(168, 85, 247, 0.08);
+  }
+  .bg-soft-green {
+    background: rgba(34, 197, 94, 0.08);
+  }
+  .text-purple {
+    color: #a855f7;
+  }
+  .text-green {
+    color: #22c55e;
+  }
+
+  .process-card h4 {
+    font-weight: 700;
+    font-size: 19px;
+    color: #0f172a;
+    margin-bottom: 12px;
+  }
+  .process-card p {
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .step-badge {
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #0f172a;
+    color: white;
+    padding: 5px 16px;
+    border-radius: 50px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    box-shadow: 0 5px 15px rgba(15, 23, 42, 0.15);
+  }
+
+  /* SUPPORTED BIOLOGICAL RECOGNITION CARDS */
+  .fungi-card-home {
+    background: white;
+    border-radius: 28px;
+    padding: 22px;
+    text-align: center;
+    height: 100%;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.02);
+    transition: all 0.3s ease;
+    border: 1px solid #f1f5f9;
+  }
+  .fungi-card-home:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.06);
+  }
+  .fungi-img-wrapper {
+    width: 100%;
+    height: 210px;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 18px;
+  }
+  .fungi-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+  .fungi-card-home:hover .fungi-image {
+    transform: scale(1.06);
+  }
+
+  .fungi-card-home h5 {
+    font-weight: 700;
+    font-size: 16.5px;
+    color: #0f172a;
+    margin-bottom: 10px;
+    font-style: italic;
+  }
+
+  .category-tag {
+    display: inline-block;
+    padding: 5px 14px;
+    border-radius: 50px;
+    font-size: 11.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+  .tag-blue {
+    background: rgba(59, 130, 246, 0.08);
+    color: #2563eb;
+  }
+  .tag-green {
+    background: rgba(34, 197, 94, 0.08);
+    color: #16a34a;
+  }
+  .tag-purple {
+    background: rgba(168, 85, 247, 0.08);
+    color: #7c3aed;
+  }
+  .tag-pink {
+    background: rgba(244, 63, 94, 0.08);
+    color: #e11d48;
+  }
+
+  .animate-pulse-slow {
+    animation: pulseSlow 3s infinite;
+  }
+  @keyframes pulseSlow {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.6;
+    }
+  }
+
+  /* ==========================================
+       RESPONSIVE ADAPTABILITY CONFIGURATIONS
+       ========================================== */
+  @media (max-width: 991.98px) {
+    .hero-card {
+      padding: 40px 30px;
+      text-align: center;
+    }
+    .hero-description {
+      margin: 0 auto 30px auto;
+    }
+    .hero-buttons {
+      justify-content: center;
+    }
+    .hero-stats {
+      justify-content: center;
+    }
+    .scanner-container {
+      height: 400px;
+      margin-top: 20px;
+    }
+    .ordering-mobile-text {
+      order: 2;
+    }
+    .ordering-mobile-img {
+      order: 1;
+    }
+    .species-card {
+      width: 210px;
+      padding: 15px;
+      top: 15px;
+      left: 15px;
+    }
+    .species-card h2 {
+      font-size: 18px;
+    }
+    .scan-status {
+      padding: 10px 14px;
+      width: 190px;
+      bottom: 15px;
+      right: 15px;
+    }
+  }
+
+  @media (max-width: 575.98px) {
+    .hero-title {
+      font-size: 32px;
+    }
+    .stat-box {
+      min-width: 100%;
+    }
+    .scanner-container {
+      height: 320px;
+    }
+    .species-card {
+      display: none;
+    } /* Hide floating card on small screens to maintain layout */
+    .scan-status {
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 15px;
+      right: auto;
+    }
+  }
+</style>
+
+{% endblock %}
