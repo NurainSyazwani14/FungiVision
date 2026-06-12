@@ -90,7 +90,7 @@
        ========================================== -->
   <div class="bulk-action">
     <button class="btn bulk-delete-btn" onclick="deleteSelected()">
-      <i class="fas fa-trash-alt me-2"></i>Purge Selected Tensors
+      <i class="fas fa-trash-alt me-2"></i>Delete Selected
     </button>
   </div>
 
@@ -202,7 +202,7 @@
                 <a
                   href="{{ url_for('delete_record', record_id=row[0]) }}"
                   class="btn btn-sm btn-action-delete"
-                  onclick="return confirm('Purge this standard diagnostic entry from storage permanently?');"
+                  onclick="return confirm('Delete this standard diagnostic entry from storage permanently?');"
                   title="Delete Entry"
                 >
                   <i class="fas fa-trash"></i>
