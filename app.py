@@ -50,7 +50,7 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 # =========================
 # LOAD AI MODEL
 # =========================
-model = load_model('model/fungi_mobilenet_pertype.h5')
+model = load_model("model/fungi_mobilenet_pertype.keras")
 classes = [
     'Candida albicans',
     'Epidermophyton floccosum',
