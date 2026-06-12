@@ -10,7 +10,11 @@ from collections import Counter
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 
+print("STEP 1 - Flask starting")
+
 app = Flask(__name__)
+
+print("STEP 2 - Flask created")
 
 # =========================
 # DATABASE
@@ -22,6 +26,8 @@ def get_db_connection():
     return conn
 
 # CREATE TABLE AUTOMATICALLY
+print("STEP 5 - Creating database")
+
 conn = get_db_connection()
 conn.execute('''
              
@@ -50,10 +56,13 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 # =========================
 # LOAD AI MODEL
 # =========================
+print("STEP 3 - Before model load")
+
 model = load_model(
     "model/fungi_mobilenet_pertype.keras",
     compile=False
 )
+
 classes = [
     'Candida albicans',
     'Epidermophyton floccosum',
@@ -61,6 +70,7 @@ classes = [
     'Trichophyton rubrum'
 ]
 
+print("STEP 4 - Model loaded")
 
 # =========================
 # HOME PAGE
