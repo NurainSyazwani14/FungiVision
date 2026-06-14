@@ -80,6 +80,15 @@ classes = [
 
 print("STEP 4 - Model loaded")
 
+# TEST MODEL
+print("Testing model...")
+
+dummy = np.zeros((1,224,224,3))
+
+result = model.predict(dummy)
+
+print("Prediction Success")
+print(result)
 # =========================
 # HOME PAGE
 # =========================
@@ -456,7 +465,10 @@ def upload():
 
     print("STEP D - Starting prediction")
 
-    prediction = model.predict(img_array)
+    print("IMG SHAPE:", img_array.shape)
+    print("MODEL INPUT:", model.input_shape)
+
+    prediction = model.predict(img_array, verbose=1)
 
     print("STEP E - Prediction finished")
 
