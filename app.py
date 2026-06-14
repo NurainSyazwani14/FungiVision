@@ -407,9 +407,13 @@ def result():
 # =========================
 @app.route('/uploads', methods=['POST'])
 def upload():
+
+    print("STEP A - Upload route entered")
+
     # CHECK IMAGE
     if 'image' not in request.files:
         return "No File Uploaded"
+
     file = request.files['image']
 
     # EMPTY FILE
@@ -421,30 +425,35 @@ def upload():
         app.config['UPLOAD_FOLDER'],
         file.filename
     )
+
     file.save(filepath)
+
+    print("STEP B - File saved")
 
     # =========================
     # IMAGE PROCESSING
     # =========================
+
     img = image.load_img(
         filepath,
         target_size=(224, 224)
     )
+
     img_array = image.img_to_array(img)
     img_array = np.expand_dims(img_array, axis=0)
     img_array = img_array / 255.0
 
+    print("STEP C - Image processed")
 
     # =========================
     # AI PREDICTION
     # =========================
-    prediction = model.predict(img_array)
-    predicted_index = np.argmax(prediction)
-    confidence = round(
-        float(np.max(prediction)) * 100,
-        2
-    )
 
+    print("STEP D - Starting prediction")
+
+    prediction = model.predict(img_array)
+
+    print("STEP E - Prediction finished")
 
     # =========================
     # UNKNOWN DETECTION
