@@ -405,7 +405,7 @@ def result():
 # =========================
 # UPLOAD & PREDICTION
 # =========================
-@app.route('/upload', methods=['POST'])
+@app.route('/uploads', methods=['POST'])
 def upload():
     # CHECK IMAGE
     if 'image' not in request.files:
