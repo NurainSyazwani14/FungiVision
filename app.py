@@ -58,8 +58,16 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 # =========================
 print("STEP 3 - Before model load")
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+MODEL_PATH = os.path.join(
+    BASE_DIR,
+    "model",
+    "fungi_mobilenet_pertype.keras"
+)
+
 model = load_model(
-    "model/fungi_mobilenet_pertype.keras",
+    MODEL_PATH,
     compile=False
 )
 
