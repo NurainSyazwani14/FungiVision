@@ -402,9 +402,6 @@ def result():
     return render_template('result.html')
 
 
-# =========================
-# UPLOAD & PREDICTION
-# =========================
 @app.route('/uploads', methods=['POST'])
 def upload():
 
@@ -455,19 +452,27 @@ def upload():
 
     print("STEP E - Prediction finished")
 
+    predicted_index = np.argmax(prediction)
+
+    confidence = round(
+        float(np.max(prediction)) * 100,
+        2
+    )
+
     # =========================
     # UNKNOWN DETECTION
     # =========================
+
     if confidence < 70:
         predicted_class = "Unknown"
         confidence = 0
     else:
         predicted_class = classes[predicted_index]
 
-
     # =========================
     # FACT DATABASE
     # =========================
+
     fungi_facts = {
         "Candida albicans": {
             "quick": "Candida albicans is a common fungal pathogen in humans.",
@@ -506,10 +511,10 @@ and chronic fungal nail disease worldwide.
         }
     }
 
-
     # =========================
     # UNKNOWN FACT
     # =========================
+
     if predicted_class == "Unknown":
         quick_fact = "No fungi detected from trained AI dataset."
         detail_fact = """
@@ -520,12 +525,13 @@ Please upload a clearer fungi microscopic image.
     else:
         quick_fact = fungi_facts[predicted_class]["quick"]
         detail_fact = fungi_facts[predicted_class]["detail"]
-        
-        
+
     # =========================
     # SAVE DATABASE
     # =========================
+
     conn = get_db_connection()
+
     conn.execute(
         """
         INSERT INTO history
@@ -538,13 +544,18 @@ Please upload a clearer fungi microscopic image.
             confidence
         )
     )
+
     conn.commit()
     conn.close()
 
+    print("STEP F - Database saved")
 
     # =========================
     # RETURN RESULT
     # =========================
+
+    print("STEP G - Returning result page")
+
     return render_template(
         'result.html',
         image_path=filepath,
@@ -553,7 +564,6 @@ Please upload a clearer fungi microscopic image.
         quick_fact=quick_fact,
         detail_fact=detail_fact
     )
-
 
 # =========================
 # DELETE RECORD
